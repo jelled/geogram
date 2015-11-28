@@ -21,7 +21,7 @@ if (!empty($_GET['location'])){
     'api.instagram.com/v1/media/search' .
     '?lat=' . $lat .
     '&lng=' . $lng .
-    '&client_id=CLIENT-ID'; //replace "CLIENT-ID"
+    '&client_id=c174fde75e904e65abcf08269ecc040b'; //replace "CLIENT-ID"
 
   $instagram_json = file_get_contents($instagram_url);
   $instagram_array = json_decode($instagram_json, true);
@@ -36,16 +36,16 @@ if (!empty($_GET['location'])){
     <script src="script.js"></script>
   </head>
   <body>
-  <form action="/geogram.php" method="get">
+  <form action="" method="get">
     <input type="text" name="location"/>
     <button type="submit">Submit</button>
   </form>
   <br/>
-  <div data-url="<?php if(!empty($instagram_url)) echo $instagram_url ?>" id="pictures">
+  <div id="images" data-url="<?php if(!empty($instagram_url)) echo $instagram_url ?>" id="pictures">
    <?php
         if(!empty($instagram_array)){
           foreach($instagram_array['data'] as $key=>$image){
-            echo '<img data-timestamp="'. $image['timestamp'] .'" src="'.$image['images']['low_resolution']['url'].'" alt=""/><br/>';
+            echo '<img id="'. $image['id'] .'" src="'.$image['images']['low_resolution']['url'].'" alt=""/><br/>';
           }
         }
    ?>

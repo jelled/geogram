@@ -1,31 +1,26 @@
 $( document ).ready(function() {
     setInterval(function() {
-      var timestamp = getLatestTimestamp();
-      if(timestamp > 0){
-          itsAjaxTime(timestamp);
-      }
-    }, 10000);
+        itsAjaxTime();
+    }, 5000);
 });
 
-function itsAjaxTime(timestamp)
+function itsAjaxTime()
 {
-    var images = $('#images');
-    var url = images.data('url') + '&max_timestamp=' + timestamp;
-    $.getJSON( url, function() {
-      $.each(data.data, function(index, image) {
-            var image_tag = '<img data-timestamp="' + image.timestamp + '" src="' + image.images.low_resolution.url + '" alt=""/><br/>';
-            images.prepend(image_tag)
-        });
-    })
+    var url = $('#images').data('url');
+    $.getJSON(url + '&callback=?', function (data) {
+        addNewImages(data);
+    });
 }
 
-function getLatestTimestamp(){
-    var max = 0;
-    $('image').each(function() {
-      var value = $(this).data('timestamp');
-      max = (value > max) ? value : max;
+function addNewImages(data){
+    $.each(data.data, function(index, image) {
+        if($('#'+ image.id).length == 0){
+            var img = $('<img ' +
+                'id="' + image.id +
+                '" src="' + image.images.low_resolution.url +
+                '" alt=""/><br/>');
+            img.hide().prependTo('#images').fadeIn(2000);
+        }
     });
-
-    return max;
 }
 
